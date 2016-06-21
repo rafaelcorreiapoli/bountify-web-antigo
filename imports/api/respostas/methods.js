@@ -2,35 +2,64 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { RespostaSchema } from './schema';
 import { Respostas } from './respostas';
 import { Perguntas } from '/imports/api/perguntas/perguntas';
+import { Restaurantes } from '/imports/api/restaurantes/restaurantes';
+import { Cupons } from '/imports/api/cupons/cupons';
 import { Promocoes } from '/imports/api/promocoes/promocoes';
 import { Questionarios } from '/imports/api/questionarios/questionarios';
 import { TIPOS_PERGUNTA } from '/imports/api/perguntas/schema';
 
 export const processarRespostas = new ValidatedMethod({
 	name: 'respostas.processarRespostas',
-	validate({respostas, promocaoId, questionarioId}) {
+	validate({respostas, promocaoId, questionarioId, token}) {
 		check(respostas, [{
 			perguntaId: String,
 			val: Match.OneOf(Number, [Number], String, [String], Boolean, [Boolean]),
 		}]);
 		check(promocaoId, String);
 		check(questionarioId, String);
+		check(token, String);
 	},
-	run({respostas, promocaoId, questionarioId}) {
+	run({respostas, promocaoId, questionarioId, token}) {
 		let userId = Meteor.userId();
 		let data = new Date();
+
 		//
-		//	Verificar se usuário já respondeu esse questionario para essa promoção
+		// Checar se a promocação existe
 		//
-		let questionarioJaRespondido = Questionarios.findOne({
-			_id: questionarioId,
-			'responderam.userId': userId,
-			'responderam.promocaoId': promocaoId
+		let promocao = Promocoes.findOne(promocaoId);
+		if (!promocao) throw new Meteor.Error('respostas.processarRespostas.promocaoNaoEncontrada');
+
+		//
+		// É o questionário que a empresa quer que seja respondido ?
+		//
+		const { restauranteId } = promocao;
+		const restaurante = Restaurantes.findOne(restauranteId);
+
+		if (restaurante.questionarioId !== questionarioId) throw new Meteor.Error('respostas.processarRespostas.questionarioInvalido')
+
+		//
+		// Validar Cupom no Restaurante
+		//
+		const cupom = Cupons.findOne({
+			ownerId: userId,
+			token,
+			restauranteId,
+			utilizado: false
 		});
 
-		if (questionarioJaRespondido) {
-			throw new Meteor.Error('respostas.processarRespostas.questionarioJaRespondido');
-		}
+		if (!cupom) throw new Meteor.Error('respostas.processarRespostas.cupomInvalido');
+
+		//	Verificar se usuário já respondeu esse questionario para essa promoção
+		//
+		// let questionarioJaRespondido = Questionarios.findOne({
+		// 	_id: questionarioId,
+		// 	'responderam.userId': userId,
+		// 	'responderam.promocaoId': promocaoId
+		// });
+
+		// if (questionarioJaRespondido) {
+		// 	throw new Meteor.Error('respostas.processarRespostas.questionarioJaRespondido');
+		// }
 
 		//
 		// Conferir se respondeu tudo que precisava
@@ -49,14 +78,10 @@ export const processarRespostas = new ValidatedMethod({
 			}
 		});
 
-		//
-		// Checar se a promocação existe e é consistente
-		//
-		let promocao = Promocoes.findOne(promocaoId);
-		if (!promocao) throw new Meteor.Error('respostas.processarRespostas.promocaoNaoEncontrada');
-		if (promocao.questionarioId !== questionarioId) {
-			throw new Meteor.Error('respostas.processarResposta.questionarioInconsistente');
-		}
+
+		// if (promocao.questionarioId !== questionarioId) {
+		// 	throw new Meteor.Error('respostas.processarResposta.questionarioInconsistente');
+		// }
 
 		respostas.forEach((resposta) => {
 			let { perguntaId, val } = resposta;
@@ -133,6 +158,16 @@ export const processarRespostas = new ValidatedMethod({
 		}, {
 			$push: {
 				responderam: questionarioRespondido
+			}
+		});
+
+		const {_id } = cupom;
+		Cupons.update({
+			_id
+		}, {
+			$set: {
+				utilizado: true,
+				utilizadoEm: data
 			}
 		});
 	}

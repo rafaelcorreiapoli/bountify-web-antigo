@@ -32,7 +32,7 @@ export const insert = new ValidatedMethod({
 		const diasParaVencer = 10; // TODO
 
 		const validoAte = moment(geradoEm).add(diasParaVencer, 'days').toDate();
-
+		const utilizado = false;
 
 		const path = './qr.png';
 		const newCupom = {
@@ -41,7 +41,8 @@ export const insert = new ValidatedMethod({
 			promocoesId,
 			token,
 			geradoEm,
-			validoAte
+			validoAte,
+			utilizado
 		};
 
 		return Cupons.insert(newCupom);
@@ -55,6 +56,7 @@ export const claim = new ValidatedMethod({
 	},
 	run({token}) {
 		const ownerId = Meteor.userId();
+		const data = new Date();
 
 		let cupom = Cupons.findOne({
 			token
@@ -72,11 +74,12 @@ export const claim = new ValidatedMethod({
 		}
 
 		const { _id } = cupom;
-		
+	
 		return Cupons.update({_id
 		}, {
 			$set: {
-				ownerId
+				ownerId,
+				data
 			}
 		});
 	}
