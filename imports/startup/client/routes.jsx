@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute } from 'react-router';
 
 // route components
 import AppContainer from '/imports/ui/containers/AppContainer';
@@ -24,11 +24,11 @@ function requireAuth(nextState, replace) {
   }
 }
 
-export default renderRoutes = () => (
+const AppRoutes = ({ browserHistory}) => (
   <Router history={browserHistory}>
     <Route path="/" component={AppContainer}>
-    	<IndexRoute component={ Home } />
-    	<Route path="/sign-in" component={ SignIn } />
+      <IndexRoute component={ Home } />
+      <Route path="/sign-in" component={ SignIn } />
       <Route path="/contacts" component={ Contacts } onEnter={requireAuth} />
       <Route path="/requests" component={ Requests } onEnter={requireAuth} />
       <Route path="/restaurantes" component={ RestaurantesContainer } onEnter={requireAuth} />
@@ -38,4 +38,10 @@ export default renderRoutes = () => (
       <Route path="cupom/:id" component = {CupomContainer} onEnter={requireAuth} />
     </Route>
   </Router>
-);
+)
+
+AppRoutes.propTypes = {
+  browserHistory: React.PropTypes.object
+}
+
+export default AppRoutes;

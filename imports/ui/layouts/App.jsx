@@ -10,7 +10,6 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { Link } from 'react-router';
-injectTapEventPlugin();
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -36,27 +35,6 @@ export default class App extends Component {
 		};
 	}
 
-	componentWillReceiveProps(nextProps) {
-		let title;
-		switch (nextProps.location.pathname) {
-			case '/restaurantes':
-				title = 'Restaurantes';
-				break;
-			case '/requests':
-				title = 'Requests';
-				break;
-			case '/restaurantes/add':
-				title = 'Adicionar Restaurante';
-				break;	
-			default:
-				title = 'Unknown';
-		}
-
-		this.setState({
-			title
-		});
-	}
-
 	handleToggle() {
 		this.setState({open: !this.state.open});
 	}
@@ -65,36 +43,13 @@ export default class App extends Component {
 	}
 
 	render() {
+    const { children } = this.props
 		return (
-			<MuiThemeProvider muiTheme={getMuiTheme()	}>
-				<div>
-				  <AppBar
-				    title={this.state.title}
-				    iconClassNameRight="muidocs-icon-navigation-expand-more"
-				    onLeftIconButtonTouchTap={this.handleToggle.bind(this)}
-				  />		
-	        <Drawer
-	        	open={this.state.open}
-	        	docked={false}
-	        	onRequestChange={(open) => this.setState({open})}>
-	        	<Link to="/requests">
-		          <MenuItem
-		          	onTouchTap={this.handleClose.bind(this)}>
-		          	Requests
-		          </MenuItem>
-	          </Link>
-	        	<Link to="/restaurantes">
-		          <MenuItem
-		          	onTouchTap={this.handleClose.bind(this)}>
-		          	Restaurantes
-		          </MenuItem>
-	          </Link>
-	        </Drawer>
-				  <div style={styles.content}>
-						{this.props.children}
-					</div>
-				</div>
-			</MuiThemeProvider>
+      <div>
+        Testesssdsadas
+        <button className='btn btn-primary'>Bustton</button>
+        {children}
+      </div>
 		);
 	}
 }
