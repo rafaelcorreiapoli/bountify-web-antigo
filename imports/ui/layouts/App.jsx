@@ -1,35 +1,19 @@
 import React, { Component } from 'react';
-import Menu from '/imports/ui/components/menu/Menu.jsx';
-import {pinkA700} from 'material-ui/styles/colors';
 import Footer from '/imports/ui/components/footer/Footer.jsx';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import Paper from 'material-ui/Paper';
-import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import { Link } from 'react-router';
+import NavBar from '/imports/ui/components/NavBar'
 
-const muiTheme = getMuiTheme({
-  palette: {
-    textColor: pinkA700,
-  },
-  appBar: {
-    height: 50,
-  },
-});
 
 const styles = {
-	content: {
-		margin: 50
+	container: {
+		//margin: 50
+		marginTop: 100
 	}
 };
 
 export default class App extends Component {
 	constructor(props) {
 		super(props);
-
+		console.log(this)
 		this.state = {
 			open: false,
 		};
@@ -45,9 +29,8 @@ export default class App extends Component {
 	render() {
     const { children } = this.props
 		return (
-      <div>
-        Testesssdsadas
-        <button className='btn btn-primary'>Bustton</button>
+      <div className="container" style={styles.container}>
+        <NavBar />
         {children}
       </div>
 		);

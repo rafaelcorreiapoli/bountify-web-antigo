@@ -5,12 +5,11 @@ import { createContainer } from 'meteor/react-meteor-data';
 
 
 export default createContainer(({ restauranteId }) => {
-  const promocoesHandler = Meteor.subscribe('promocoes.porRestaurante', { restauranteId });
+  const promocoesHandler = Meteor.subscribe('promocoes');
   const loading = !promocoesHandler.ready();
-  const promocoes = Promocoes.find({ restauranteId}).fetch();
+  const promocoes = Promocoes.find().fetch();
   return {
     loading,
     promocoes
   };
 }, PromocoesList);
-

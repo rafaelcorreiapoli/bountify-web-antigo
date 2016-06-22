@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
+import React, { Component } from 'react';
 import { Router, Route, IndexRoute } from 'react-router';
 
 // route components
@@ -13,7 +13,15 @@ import RestaurantesContainer from '/imports/ui/containers/RestaurantesContainer'
 import RestaurantesAdd from '/imports/ui/pages/RestaurantesAdd';
 import RestauranteContainer from '/imports/ui/containers/RestauranteContainer';
 import PromocaoContainer from '/imports/ui/containers/PromocaoContainer';
+
+import UsuariosContainer from '/imports/ui/containers/UsuariosContainer';
+import VouchersContainer from '/imports/ui/containers/VouchersContainer';
+import PromocoesContainer from '/imports/ui/containers/PromocoesContainer';
+import QuestionariosContainer from '/imports/ui/containers/QuestionariosContainer';
+import CuponsContainer from '/imports/ui/containers/CuponsContainer';
+
 import CupomContainer from '/imports/ui/containers/CupomContainer';
+import { browserHistory} from 'react-router';
 
 function requireAuth(nextState, replace) {
   if (!Meteor.userId()) {
@@ -24,21 +32,30 @@ function requireAuth(nextState, replace) {
   }
 }
 
-const AppRoutes = ({ browserHistory}) => (
-  <Router history={browserHistory}>
-    <Route path="/" component={AppContainer}>
-      <IndexRoute component={ Home } />
-      <Route path="/sign-in" component={ SignIn } />
-      <Route path="/contacts" component={ Contacts } onEnter={requireAuth} />
-      <Route path="/requests" component={ Requests } onEnter={requireAuth} />
-      <Route path="/restaurantes" component={ RestaurantesContainer } onEnter={requireAuth} />
-      <Route path="/restaurantes/add" component={ RestaurantesAdd } onEnter={requireAuth} />
-      <Route path="restaurante/:id" component = {RestauranteContainer} onEnter={requireAuth} />
-      <Route path="promocao/:id" component = {PromocaoContainer} onEnter={requireAuth} />
-      <Route path="cupom/:id" component = {CupomContainer} onEnter={requireAuth} />
-    </Route>
-  </Router>
-)
+var routes =
+  <Route path="/" component={AppContainer}>
+    <IndexRoute component={ Home } />
+    <Route path="/sign-in" component={ SignIn } />
+    <Route path="/usuarios" component={ UsuariosContainer } onEnter={requireAuth} />
+    <Route path="/vouchers" component={ VouchersContainer } onEnter={requireAuth} />
+    <Route path="/promocoes" component={ PromocoesContainer } onEnter={requireAuth} />
+    <Route path="/questionarios" component={ QuestionariosContainer } onEnter={requireAuth} />
+    <Route path="/cupons" component={ CuponsContainer } onEnter={requireAuth} />
+
+    <Route path="/requests" component={ Requests } onEnter={requireAuth} />
+    <Route path="/restaurantes" component={ RestaurantesContainer } onEnter={requireAuth} />
+    <Route path="/restaurantes/add" component={ RestaurantesAdd } onEnter={requireAuth} />
+    <Route path="restaurante/:id" component = {RestauranteContainer} onEnter={requireAuth} />
+    <Route path="promocao/:id" component = {PromocaoContainer} onEnter={requireAuth} />
+    <Route path="cupom/:id" component = {CupomContainer} onEnter={requireAuth} />
+  </Route>
+
+class AppRoutes extends Component {
+  render() {
+    return <Router history={browserHistory} routes={routes} />
+  }
+}
+
 
 AppRoutes.propTypes = {
   browserHistory: React.PropTypes.object

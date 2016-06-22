@@ -22,16 +22,25 @@ export default class RestaurantesPage extends React.Component {
   }
 
   render() {
-    let { restaurantes, loading} = this.props;
+    let { restaurantes, restaurantesReady} = this.props;
 
     return (
       <div>
+        {
+          restaurantesReady ?
+            <RestaurantesList restaurantes={restaurantes} />
+          :
+          <span>Loading...</span>
+        }
+
+      </div>
+    );
+  }
+};
+/*
 
         {!loading ? <RestaurantesList restaurantes={restaurantes}/> : <Loading />}
         <FloatingActionButton onTouchTap={this.handleClick.bind(this)} style={styles.fab}>
           <ContentAdd />
         </FloatingActionButton>
-      </div>
-    );
-  }
-};
+        */
