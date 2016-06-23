@@ -23,6 +23,6 @@ export const PromocaoSchema = new SimpleSchema({
 	ativa: {
 		type: Boolean,
 		optional: true,
-		autoValue: () => false
+		defaultValue: false
 	}
 });

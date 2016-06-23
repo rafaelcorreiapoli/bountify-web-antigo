@@ -77,7 +77,7 @@ class PromocoesAdd extends React.Component {
         <NotificationSystem ref="notificationSystem" />
         <h3>Criar nova Promoção</h3>
         <form onSubmit={this.onSubmit}>
-          <t.form.Form ref="form" value={value} type={FormSchema} options={{disabled: callingMethod}} />
+          <t.form.Form ref="form" value={value} type={FormSchema}  />
           <div className="form-group">
             <Button type="submit" bsStyle="primary" disabled={callingMethod}>{callingMethod ? 'Carregando...' : 'Salvar'}</Button>
           </div>

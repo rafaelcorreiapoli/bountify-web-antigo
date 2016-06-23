@@ -15,7 +15,7 @@ class RestaurantesContainer extends React.Component {
     const { router } = this.context
     const { _id } = restaurante
     console.log(restaurante, router)
-    router.push(`/restaurante/${_id}`)
+    router.push(`/restaurantes/${_id}`)
   }
   render() {
     let { restaurantes, restaurantesReady} = this.props;

@@ -45,7 +45,12 @@ export const insert = new ValidatedMethod({
 			utilizado
 		};
 
-		return Cupons.insert(newCupom);
+
+		let id =  Cupons.insert(newCupom);
+		return {
+			id,
+			token
+		}
 	}
 });
 
@@ -74,7 +79,7 @@ export const claim = new ValidatedMethod({
 		}
 
 		const { _id } = cupom;
-	
+
 		return Cupons.update({_id
 		}, {
 			$set: {

@@ -1,10 +1,10 @@
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 export const TIPOS_PERGUNTA = {
-	TEXT: 0,
-	CHECKBOX: 1,
-	SELECT: 2,
-	RATE: 3
+	TEXT: 'text',
+	CHECKBOX: 'checkbox',
+	SELECT: 'select',
+	RATE: 'rate'
 };
 
 export const PerguntaSchema = new SimpleSchema({
@@ -19,16 +19,10 @@ export const PerguntaSchema = new SimpleSchema({
 		type: String
 	},
 	tipo: {
-		type: Number
+		type: String
 	},
-	opcoes: {
-		type: [Object],
-		blackbox: true,
-		optional: true
-	},
-	maxOpcoes: {
-		type: Number,
-		optional: true
+	config: {
+		type: Object,
+		blackbox: true
 	}
 });
-

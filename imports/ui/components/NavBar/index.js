@@ -7,7 +7,7 @@ const NavBar = (props) => {
       <Navbar>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#">React-Bootstrap</a>
+            <a href="#">Boun<b>ti</b>fy</a>
           </Navbar.Brand>
         </Navbar.Header>
         <Nav>

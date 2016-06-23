@@ -21,7 +21,8 @@ import QuestionariosContainer from '/imports/ui/containers/QuestionariosContaine
 import CuponsContainer from '/imports/ui/containers/CuponsContainer';
 import RestaurantesAdd from '/imports/ui/containers/RestaurantesAdd';
 import PromocoesAdd from '/imports/ui/containers/PromocoesAdd';
-
+import QuestionariosAdd from '/imports/ui/containers/QuestionariosAdd';
+import RestauranteRelations from '/imports/ui/components/RestauranteRelations'
 import CupomContainer from '/imports/ui/containers/CupomContainer';
 import { browserHistory} from 'react-router';
 
@@ -45,14 +46,20 @@ var routes =
     <Route path="/cupons" component={ CuponsContainer } onEnter={requireAuth} />
 
     <Route path="/restaurantes/add" component={ RestaurantesAdd } onEnter={requireAuth} />
-    <Route path="/restaurantes/:id/promocoes/add" component={ PromocoesAdd } onEnter={requireAuth} />
+
 
     <Route path="/requests" component={ Requests } onEnter={requireAuth} />
     <Route path="/restaurantes" component={ RestaurantesContainer } onEnter={requireAuth} />
 
-    <Route path="restaurante/:id" component = {RestauranteContainer} onEnter={requireAuth} />
+    <Route path="restaurantes/:id" component = {RestauranteContainer} onEnter={requireAuth}>
+      <IndexRoute component={RestauranteRelations} />
+      <Route path="promocoes/add" component={ PromocoesAdd } onEnter={requireAuth} />
+      <Route path="questionarios/add" component={ QuestionariosAdd } onEnter={requireAuth} />
+    </Route>
+
+
     <Route path="promocao/:id" component = {PromocaoContainer} onEnter={requireAuth} />
-    <Route path="cupom/:id" component = {CupomContainer} onEnter={requireAuth} />
+    <Route path="cupons/:id" component = {CupomContainer} onEnter={requireAuth} />
   </Route>
 
 class AppRoutes extends Component {

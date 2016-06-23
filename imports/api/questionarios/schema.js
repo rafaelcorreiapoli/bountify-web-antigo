@@ -20,10 +20,16 @@ export const QuestionarioSchema = new SimpleSchema({
 		type: String
 	},
 	responderam: {
-		type: [QuestionarioRespondidoSchema]
+		type: [QuestionarioRespondidoSchema],
+		optional: true
 	},
 	tempoMedio: {
-		type: Number
+		type: Number,
+		optional: true
+	},
+	ativo: {
+		type: Boolean,
+		optional: true,
+		defaultValue: false
 	}
 });
-

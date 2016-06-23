@@ -13,7 +13,6 @@ const styles = {
 export default class App extends Component {
 	constructor(props) {
 		super(props);
-		console.log(this)
 		this.state = {
 			open: false,
 		};
@@ -31,9 +30,9 @@ export default class App extends Component {
 
 		return (
 			<div>
-			
+
 			<NavBar />
-      <Grid>
+      <Grid fluid={true}>
         {children}
       </Grid>
 			</div>

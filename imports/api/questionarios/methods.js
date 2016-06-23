@@ -11,7 +11,7 @@ export const insert = new ValidatedMethod({
 		console.log(questionario);
 		console.log(perguntas);
 		check(questionario, QuestionarioSchema);
-		check(perguntas, [PerguntaSchema.pick(['titulo', 'tipo', 'opcoes', 'opcoes.$', 'maxOpcoes'])]);
+		check(perguntas, [PerguntaSchema.pick(['titulo', 'tipo', 'config'])]);
 	},
 	run({questionario, perguntas}) {
 		let questionarioId = Questionarios.insert(questionario);
@@ -24,3 +24,30 @@ export const insert = new ValidatedMethod({
 		});
 	}
 });
+
+export const setAtivo = new ValidatedMethod({
+	name: 'questionarios.toggleAtiva',
+	validate({questionarioId}) {
+		check(questionarioId, String)
+	},
+	run({questionarioId}) {
+		Questionarios.update({
+			_id: {$ne: questionarioId},
+			ativo: true
+		}, {
+			$set: {
+				ativo: false
+			}
+		}, {
+			multi: true
+		})
+
+		return Questionarios.update({
+			_id: questionarioId
+		}, {
+			$set: {
+				ativo: true
+			}
+		})
+	}
+})
