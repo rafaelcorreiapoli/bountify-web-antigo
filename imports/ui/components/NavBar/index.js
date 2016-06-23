@@ -1,48 +1,36 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
+import { Navbar, Nav, NavItem, NavDropdown, Button } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 const NavBar = (props) => {
   return (
-    <div className="navbar navbar-default navbar-fixed-top">
-      <div className="container">
-        <div className="navbar-header">
-          <a href="../" className="navbar-brand">Bountify</a>
-          <button className="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-            <span className="icon-bar"></span>
-            <span className="icon-bar"></span>
-            <span className="icon-bar"></span>
-          </button>
-        </div>
-        <div className="navbar-collapse collapse" id="navbar-main">
-          <ul className="nav navbar-nav">
-            <li className="active">
-              <Link to='/restaurantes'>Restaurantes</Link>
-            </li>
-            <li>
-              <Link to='/usuarios'>Usuários</Link>
-            </li>
-            <li>
-              <Link to='/vouchers'>Vouchers</Link>
-            </li>
-            <li>
-              <Link to='/promocoes'>Promoções</Link>
-            </li>
-            <li>
-              <Link to='/questionarios'>Questionários</Link>
-            </li>
-            <li>
-              <Link to='/cupons'>Cupons</Link>
-            </li>
-          </ul>
-
-          <ul className="nav navbar-nav navbar-right">
-            <li>
-              <a href="../help/">Logout</a>
-            </li>
-          </ul>
-
-        </div>
-      </div>
-    </div>
+      <Navbar>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <a href="#">React-Bootstrap</a>
+          </Navbar.Brand>
+        </Navbar.Header>
+        <Nav>
+          <LinkContainer to={'/restaurantes'}>
+            <NavItem eventKey={1} href="#">Restaurantes</NavItem>
+          </LinkContainer>
+          <LinkContainer to={'/usuarios'}>
+            <NavItem eventKey={2} href="#">Usuários</NavItem>
+          </LinkContainer>
+          <LinkContainer to={'/vouchers'}>
+            <NavItem eventKey={2} href="#">Vouchers</NavItem>
+          </LinkContainer>
+          <LinkContainer to={'/promocoes'}>
+            <NavItem eventKey={2} href="#">Promoções</NavItem>
+          </LinkContainer>
+          <LinkContainer to={'/questionarios'}>
+            <NavItem eventKey={2} href="#">Questionários</NavItem>
+          </LinkContainer>
+          <LinkContainer to={'/cupons'}>
+            <NavItem eventKey={2} href="#">Cupons</NavItem>
+          </LinkContainer>
+        </Nav>
+      </Navbar>
   )
 }
 

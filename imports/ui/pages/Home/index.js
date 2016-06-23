@@ -8,8 +8,7 @@ export default class Home extends React.Component {
   render() {
     return (
       <div>
-      	<h1>Homesssss</h1>
-        <h1>Homessssssss</h1>
+      	<h1>Bem-vindo ao Bountify Web</h1>
       </div>
     );
   }

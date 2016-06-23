@@ -3,6 +3,12 @@ import { Cupons } from '../cupons';
 import { Restaurantes } from '/imports/api/restaurantes/restaurantes';
 import { check } from 'meteor/check';
 
+Meteor.publish('cupons', function() {
+	return Cupons.find();
+});
+
+
+
 Meteor.publishComposite('cupons.porRestaurante', function({ restauranteId }) {
   check(restauranteId, String);
   return {

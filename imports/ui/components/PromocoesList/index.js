@@ -13,7 +13,7 @@ export default class PromocoesList extends React.Component {
         {headerName: "Descrição", field: "descricao"}
     ];
     return (
-      <div className="ag-fresh" style={{height: '100%'}}>
+      <div className="ag-bootstrap" style={{height: '100%'}}>
         <AgGridReact
           columnDefs={columnDefs}
           rowData={promocoes}

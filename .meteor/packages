@@ -26,6 +26,6 @@ aldeed:collection2
 check
 reywood:publish-composite
 momentjs:moment
-twbs:bootstrap
+twbs:bootstrap@4.0.0-alpha2
 gadicc:ecmascript-hot@2.0.0-beta.4
 bootswatch:flatly

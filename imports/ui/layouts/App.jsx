@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import Footer from '/imports/ui/components/footer/Footer.jsx';
 import NavBar from '/imports/ui/components/NavBar'
-
-
+import { Grid } from 'react-bootstrap'
+import NotificationSystem from 'react-notification-system'
 const styles = {
 	container: {
 		//margin: 50
-		marginTop: 100
+		//marginTop: 100
 	}
 };
 
@@ -28,11 +28,15 @@ export default class App extends Component {
 
 	render() {
     const { children } = this.props
+
 		return (
-      <div className="container" style={styles.container}>
-        <NavBar />
+			<div>
+			
+			<NavBar />
+      <Grid>
         {children}
-      </div>
+      </Grid>
+			</div>
 		);
 	}
 }

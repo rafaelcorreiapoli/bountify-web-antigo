@@ -14,7 +14,7 @@ const VouchersContainer = React.createClass({
   }
 })
 
-export default createContainer(({ params: { id } }) => {
+export default createContainer((params) => {
   const handle = Meteor.subscribe('vouchers');
   const vouchersReady = handle.ready();
   const vouchers = Vouchers.find().fetch()

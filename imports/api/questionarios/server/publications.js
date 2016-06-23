@@ -3,6 +3,12 @@ import { Questionarios } from '../questionarios';
 import { Perguntas } from '/imports/api/perguntas/perguntas';
 import { check } from 'meteor/check';
 
+Meteor.publish('questionarios', function() {
+	return Questionarios.find();
+});
+
+
+
 Meteor.publish('questionarios.porRestaurante', function({ restauranteId }) {
   check(restauranteId, String);
   return Questionarios.find({
