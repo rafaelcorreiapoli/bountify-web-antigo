@@ -21,6 +21,7 @@ import QuestionariosContainer from '/imports/ui/containers/QuestionariosContaine
 import CuponsContainer from '/imports/ui/containers/CuponsContainer';
 import RestaurantesAdd from '/imports/ui/containers/RestaurantesAdd';
 import PromocoesAdd from '/imports/ui/containers/PromocoesAdd';
+import ProdutosContainer from '/imports/ui/containers/ProdutosContainer';
 import QuestionariosAdd from '/imports/ui/containers/QuestionariosAdd';
 import RestauranteRelations from '/imports/ui/components/RestauranteRelations'
 import CupomContainer from '/imports/ui/containers/CupomContainer';
@@ -42,6 +43,7 @@ var routes =
     <Route path="/usuarios" component={ UsuariosContainer } onEnter={requireAuth} />
     <Route path="/vouchers" component={ VouchersContainer } onEnter={requireAuth} />
     <Route path="/promocoes" component={ PromocoesContainer } onEnter={requireAuth} />
+    <Route path="/produtos" component={ ProdutosContainer } onEnter={requireAuth} />
     <Route path="/questionarios" component={ QuestionariosContainer } onEnter={requireAuth} />
     <Route path="/cupons" component={ CuponsContainer } onEnter={requireAuth} />
 
@@ -51,14 +53,15 @@ var routes =
     <Route path="/requests" component={ Requests } onEnter={requireAuth} />
     <Route path="/restaurantes" component={ RestaurantesContainer } onEnter={requireAuth} />
 
-    <Route path="restaurantes/:id" component = {RestauranteContainer} onEnter={requireAuth}>
+    <Route path="restaurante/:id" component = {RestauranteContainer} onEnter={requireAuth}>
       <IndexRoute component={RestauranteRelations} />
+      <Route path="promocao/:promocaoId" component={ PromocaoContainer } onEnter={requireAuth} />
       <Route path="promocoes/add" component={ PromocoesAdd } onEnter={requireAuth} />
       <Route path="questionarios/add" component={ QuestionariosAdd } onEnter={requireAuth} />
     </Route>
 
 
-    <Route path="promocao/:id" component = {PromocaoContainer} onEnter={requireAuth} />
+    {/*<Route path="promocao/:id" component = {PromocaoContainer} onEnter={requireAuth} />*/}
     <Route path="cupons/:id" component = {CupomContainer} onEnter={requireAuth} />
   </Route>
 

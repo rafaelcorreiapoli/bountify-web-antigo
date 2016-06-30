@@ -11,7 +11,7 @@ export const insert = new ValidatedMethod({
 		console.log(questionario);
 		console.log(perguntas);
 		check(questionario, QuestionarioSchema);
-		check(perguntas, [PerguntaSchema.pick(['titulo', 'tipo', 'config'])]);
+		check(perguntas, [PerguntaSchema.pick(['titulo', 'tipo', 'config', 'widget'])]);
 	},
 	run({questionario, perguntas}) {
 		let questionarioId = Questionarios.insert(questionario);

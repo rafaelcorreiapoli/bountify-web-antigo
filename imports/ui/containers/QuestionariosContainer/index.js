@@ -48,7 +48,7 @@ class QuestionariosContainer extends Component {
 export default createContainer(({ restauranteId }) => {
   let handler
   let questionarios
-  console.log(restauranteId)
+
   if (restauranteId) {
     handler = Meteor.subscribe('questionarios.porRestaurante', { restauranteId});
     questionarios = Questionarios.find({ restauranteId }).fetch();

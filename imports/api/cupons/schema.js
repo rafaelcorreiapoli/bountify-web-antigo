@@ -7,8 +7,13 @@ export const CupomSchema = new SimpleSchema({
 	userId: {
 		type: String
 	},
+	//DELETAR ISSO
 	promocoesId: {
-		type: [String]
+		type: [String],
+		optional: true
+	},
+	promocaoId: {
+		type: String
 	},
 	token: {
 		type: String
@@ -33,6 +38,8 @@ export const CupomSchema = new SimpleSchema({
 	},
 	utilizado: {
 		type: Boolean
+	},
+	questionarioId: {
+		type: String
 	}
 });
-

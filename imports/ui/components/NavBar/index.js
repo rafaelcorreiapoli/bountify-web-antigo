@@ -18,16 +18,19 @@ const NavBar = (props) => {
             <NavItem eventKey={2} href="#">Usuários</NavItem>
           </LinkContainer>
           <LinkContainer to={'/vouchers'}>
-            <NavItem eventKey={2} href="#">Vouchers</NavItem>
+            <NavItem eventKey={3} href="#">Vouchers</NavItem>
           </LinkContainer>
           <LinkContainer to={'/promocoes'}>
-            <NavItem eventKey={2} href="#">Promoções</NavItem>
+            <NavItem eventKey={4} href="#">Promoções</NavItem>
           </LinkContainer>
           <LinkContainer to={'/questionarios'}>
-            <NavItem eventKey={2} href="#">Questionários</NavItem>
+            <NavItem eventKey={5} href="#">Questionários</NavItem>
           </LinkContainer>
           <LinkContainer to={'/cupons'}>
-            <NavItem eventKey={2} href="#">Cupons</NavItem>
+            <NavItem eventKey={6} href="#">Cupons</NavItem>
+          </LinkContainer>
+          <LinkContainer to={'/produtos'}>
+            <NavItem eventKey={7} href="#">Produtos</NavItem>
           </LinkContainer>
         </Nav>
       </Navbar>

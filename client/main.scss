@@ -10,3 +10,9 @@ a {
 a.active {
 	background-color: red;
 }
+a {
+   outline: 0;
+}
+a:focus {
+outline: 0;
+}

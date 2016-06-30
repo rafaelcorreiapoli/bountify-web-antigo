@@ -8,6 +8,7 @@ class PromocoesContainer extends Component {
   constructor(props) {
     super(props)
     this.handleOnToggleAtiva = this.handleOnToggleAtiva.bind(this)
+    this.handleOnPromocaoClick = this.handleOnPromocaoClick.bind(this)
   }
 
   handleOnToggleAtiva({ _id, nome, ativa }) {
@@ -27,25 +28,51 @@ class PromocoesContainer extends Component {
       }
     })
   }
+
+  handleOnPromocaoClick({ _id}) {
+    const { router } = this.context
+    const { restauranteId } = this.props
+    router.push(`/restaurante/${restauranteId}/promocao/${_id}`)
+  }
+
   render () {
-    let { promocoes } = this.props
+    let { promocoes, promocoesReady } = this.props
 
     return (
       <div className="ag-fresh" style={{height: 500, width: '100%'}}>
         <NotificationSystem ref="notificationSystem" />
+        { promocoesReady ?
         <PromocoesList
            promocoes={promocoes}
+           onPromocaoClick={this.handleOnPromocaoClick}
            onToggleAtiva={this.handleOnToggleAtiva} />
+         :
+         <span>Loading...</span>
+        }
       </div>
     )
   }
 }
 
 
+PromocoesContainer.contextTypes =  {
+  router: React.PropTypes.object
+}
+
+
 export default createContainer(({ restauranteId }) => {
-  const handle = Meteor.subscribe('promocoes');
-  const promocoesReady = handle.ready();
-  const promocoes = Promocoes.find().fetch();
+  let handler
+  let promocoes
+  console.log(restauranteId);
+  if (restauranteId) {
+    handler = Meteor.subscribe('promocoes.porRestaurante', { restauranteId});
+    promocoes = Promocoes.find({ restauranteId }).fetch();
+  } else {
+    handler = Meteor.subscribe('promocoes');
+    promocoes = Promocoes.find().fetch();
+  }
+
+  promocoesReady = handler.ready();
   return {
     promocoesReady,
     promocoes

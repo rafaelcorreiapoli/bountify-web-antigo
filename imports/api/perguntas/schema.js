@@ -4,7 +4,9 @@ export const TIPOS_PERGUNTA = {
 	TEXT: 'text',
 	CHECKBOX: 'checkbox',
 	SELECT: 'select',
-	RATE: 'rate'
+	RATE: 'rate',
+	SLIDER: 'slider',
+	IMAGE_SELECT: 'imageSelect'
 };
 
 export const PerguntaSchema = new SimpleSchema({
@@ -19,6 +21,9 @@ export const PerguntaSchema = new SimpleSchema({
 		type: String
 	},
 	tipo: {
+		type: String
+	},
+	widget: {
 		type: String
 	},
 	config: {

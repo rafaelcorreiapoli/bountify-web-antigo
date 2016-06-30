@@ -17,12 +17,12 @@ Meteor.publish('questionarios.porRestaurante', function({ restauranteId }) {
 });
 
 
-Meteor.publishComposite('questionarios.single', function({ id }) {
-  check(id, String);
+Meteor.publishComposite('questionarios.single', function({ questionarioId }) {
+  check(questionarioId, String);
   return {
     find() {
       return Questionarios.find({
-        _id: id
+        _id: questionarioId
       });
     },
     children: [{

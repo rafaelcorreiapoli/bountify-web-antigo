@@ -15,7 +15,8 @@ class RestauranteContainer extends React.Component {
   	let {restaurante, restauranteReady, restauranteId, children} = this.props;
     return (
       <div>
-        {/*<Grid>*/}
+        {
+          restauranteReady ?
            <Row>
              <Col xs={12} md={2}>
                <RestauranteCard {...restaurante} />
@@ -24,7 +25,9 @@ class RestauranteContainer extends React.Component {
                {React.cloneElement(children, {restauranteId})}
              </Col>
            </Row>
-         {/*</Grid>*/}
+          :
+          <span>Loading...</span>
+         }
 
       </div>
     );
@@ -34,6 +37,7 @@ class RestauranteContainer extends React.Component {
 
 export default createContainer(({ params: { id } }) => {
   const restauranteId = id
+  console.log('restauranteId:', restauranteId)
   const handle = Meteor.subscribe('restaurantes.single', { id: restauranteId });
   const restauranteReady = handle.ready();
   const restaurante = Restaurantes.findOne(restauranteId);

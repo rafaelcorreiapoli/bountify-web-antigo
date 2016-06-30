@@ -13,14 +13,14 @@ const RestauranteRelations = ({
   return (
     <Tabs defaultActiveKey={2} id="uncontrolled-tab-example">
       <Tab eventKey={1} title="Promoções">
-        <PromocoesContainer />
-        <LinkContainer to={`/restaurantes/${restauranteId}/promocoes/add`}>
+        <PromocoesContainer restauranteId={restauranteId} />
+        <LinkContainer to={`/restaurante/${restauranteId}/promocoes/add`}>
            <Button bsStyle="primary"> Criar Promoção</Button>
         </LinkContainer>
       </Tab>
       <Tab eventKey={2} title="Questionários">
         <QuestionariosContainer restauranteId={restauranteId} />
-        <LinkContainer to={`/restaurantes/${restauranteId}/questionarios/add`}>
+        <LinkContainer to={`/restaurante/${restauranteId}/questionarios/add`}>
            <Button bsStyle="primary"> Criar Questionário</Button>
         </LinkContainer>
       </Tab>

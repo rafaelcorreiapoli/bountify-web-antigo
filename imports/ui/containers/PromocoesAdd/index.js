@@ -7,7 +7,8 @@ const FormSchema = t.struct({
   nome: t.String,
   descricao: t.String,
   validoAte: t.Date,
-  imagemUrl: t.String
+  imagemUrl: t.String,
+  //backgroundUrl: t.String
 })
 
 

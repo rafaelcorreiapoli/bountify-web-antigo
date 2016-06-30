@@ -8,11 +8,10 @@ const RestauranteCard = ({
 }) => {
   return (
     <Panel collapsible defaultExpanded header={nome}>
-      <Image src={logoUrl} responsive />
+      <Image src={logoUrl} responsive style={{margin: 'auto'}}/>
       <ListGroup fill>
-        <ListGroupItem>{categoria}</ListGroupItem>
+        <ListGroupItem><i className="fa fa-list-alt" /> <i>{categoria}</i></ListGroupItem>
       </ListGroup>
-      Some more panel content here.
     </Panel>
   )
 }

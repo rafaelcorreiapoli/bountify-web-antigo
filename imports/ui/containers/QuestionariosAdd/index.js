@@ -5,26 +5,35 @@ import t from 'tcomb-form'
 import NotificationSystem from 'react-notification-system'
 import { TIPOS_PERGUNTA } from '/imports/api/perguntas/schema'
 
-const Tipos = t.enums({
+const Widgets = t.enums({
   [TIPOS_PERGUNTA.TEXT]: 'Text',
   [TIPOS_PERGUNTA.CHECKBOX]: 'Checkbox',
   [TIPOS_PERGUNTA.SELECT]: 'Select',
-  [TIPOS_PERGUNTA.RATE]: 'Slider'
+  [TIPOS_PERGUNTA.SLIDER]: 'Slider',
+  [TIPOS_PERGUNTA.IMAGE_SELECT]: 'Image Select'
 })
+const Tipos = t.enums({
+  array: 'Array',
+  number: 'Number',
+  string: 'String',
+  date: 'Date'
+})
+
 const BaseWidget = t.struct({
   titulo: t.String,
-  tipo: Tipos
+  tipo: Tipos,
+  widget: Widgets,
 })
 
 const TextWidget = BaseWidget.extend({
   config: t.struct({
-    maxChar: t.Number
+    maxLength: t.Number
   })
 })
 const SliderWidget = BaseWidget.extend({
   config: t.struct({
-    minVal: t.Number,
-    maxVal: t.Number,
+    minValue: t.Number,
+    maxValue: t.Number,
     step: t.Number
   })
 })
@@ -37,22 +46,36 @@ const Option = t.struct({
 const CheckboxWidget = BaseWidget.extend({
   config: t.struct({
     opcoes: t.list(Option),
-    maxItems: t.Number
+    minLength: t.Number,
+    maxLength: t.Number
   })
 })
 
-SelectWidget = BaseWidget.extend({
+const RatingWidget = BaseWidget.extend({
+  config: t.struct({
+    maxValue: t.Number,
+    icon: t.String,
+  })
+})
+
+const ImageSelectWidget = BaseWidget.extend({
   config: t.struct({
     opcoes: t.list(Option)
   })
 })
 
-const Widget = t.union([TextWidget, SliderWidget, CheckboxWidget])
+const SelectWidget = BaseWidget.extend({
+  config: t.struct({
+    opcoes: t.list(Option)
+  })
+})
+
+const Widget = t.union([TextWidget, SliderWidget, CheckboxWidget, RatingWidget, ImageSelectWidget])
 
 Widget.dispatch = (value) => {
-  tipo = value && value.tipo ? value.tipo : TIPOS_PERGUNTA.TEXT
+  widget = value && value.widget ? value.widget : TIPOS_PERGUNTA.TEXT
 
-  switch(tipo) {
+  switch(widget) {
     case TIPOS_PERGUNTA.TEXT:
     return TextWidget
     case TIPOS_PERGUNTA.CHECKBOX:
@@ -60,6 +83,8 @@ Widget.dispatch = (value) => {
     case TIPOS_PERGUNTA.RATE:
     return SliderWidget
     case TIPOS_PERGUNTA.SELECT:
+    return SelectWidget
+    case TIPOS_PERGUNTA.IMAGE_SELECT:
     return SelectWidget
   }
 }

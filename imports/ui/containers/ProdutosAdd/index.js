@@ -1,20 +1,18 @@
 import React, { PropTypes } from 'react'
-import { insert } from '/imports/api/restaurantes/methods'
+import { insert } from '/imports/api/produtos/methods'
 import { Button } from 'react-bootstrap'
 import t from 'tcomb-form'
 import NotificationSystem from 'react-notification-system'
 const FormSchema = t.struct({
   nome: t.String,
-  categoria: t.String,
-  lat: t.Number,
-  lng: t.Number,
-  logoUrl: t.String,
-  backgroundUrl: t.String
+  imagemUrl: t.String,
+  desconto: t.Number,
+  observacao: t.maybe(t.String)
 })
 
 
 
-class RestaurantesAdd extends React.Component {
+class ProdutosAdd extends React.Component {
   constructor(props) {
     super(props)
 
@@ -28,7 +26,6 @@ class RestaurantesAdd extends React.Component {
   }
 
   clearForm() {
-    console.log('clearing...')
     this.setState({
       value: null
     })
@@ -36,17 +33,20 @@ class RestaurantesAdd extends React.Component {
 
   onSubmit(e) {
     e.preventDefault()
-    const restaurante = this.refs.form.getValue()
-    console.log(restaurante)
-    if (!restaurante) return
+    const produto = this.refs.form.getValue()
+    if (!produto) return
     const { notificationSystem } = this.refs
+    const { promocaoId } = this.props
+    produto.promocaoId = promocaoId
 
+    console.log(promocaoId)
+    console.log(produto)
 
     this.setState({
       callingMethod: true,
-      value: restaurante
+      value: produto
     })
-    insert.call(restaurante, (err, res) => {
+    insert.call({...produto, promocaoId}, (err, res) => {
       this.clearForm();
       this.setState({
         callingMethod: false
@@ -58,9 +58,9 @@ class RestaurantesAdd extends React.Component {
           level: 'error'
         });
       } else {
-        const { nome } = restaurante
+        const { nome } = produto
         notificationSystem.addNotification({
-          message: `Restaurante ${nome} criado com sucesso.`,
+          message: `Produto ${nome} criado com sucesso.`,
           level: 'success'
         });
       }
@@ -76,9 +76,9 @@ class RestaurantesAdd extends React.Component {
     return (
       <div>
         <NotificationSystem ref="notificationSystem" />
-        <h3>Criar novo Restaurante</h3>
+        <h3>Criar novo Produto</h3>
         <form onSubmit={this.onSubmit}>
-          <t.form.Form ref="form" value={value} type={FormSchema} options={{disabled: callingMethod}} />
+          <t.form.Form ref="form" value={value} type={FormSchema}  />
           <div className="form-group">
             <Button type="submit" bsStyle="primary" disabled={callingMethod}>{callingMethod ? 'Carregando...' : 'Salvar'}</Button>
           </div>
@@ -88,4 +88,4 @@ class RestaurantesAdd extends React.Component {
   }
 }
 
-export default RestaurantesAdd;
+export default ProdutosAdd;

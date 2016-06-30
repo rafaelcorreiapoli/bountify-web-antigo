@@ -13,6 +13,7 @@ export default class PromocoesList extends React.Component {
   constructor(props) {
     super(props);
     this.handleCellClicked = this.handleCellClicked.bind(this)
+    this.onRowDoubleClicked = this.onRowDoubleClicked.bind(this)
   }
   handleCellClicked(e) {
     const { onToggleAtiva } = this.props
@@ -20,10 +21,17 @@ export default class PromocoesList extends React.Component {
     switch (colDef.field) {
       case 'ativa':
         onToggleAtiva(data)
+        return false;
         break;
       default:
         break;
     }
+  }
+  onRowDoubleClicked(row) {
+    console.log(this.props)
+    const { data } = row
+    const { onPromocaoClick } = this.props
+    onPromocaoClick(data)
   }
   render() {
     const { promocoes } = this.props;
@@ -64,6 +72,7 @@ export default class PromocoesList extends React.Component {
               columnDefs={columnDefs}
               rowData={promocoes}
               rowHeight={50}
+              onRowDoubleClicked={this.onRowDoubleClicked}
               onCellClicked={this.handleCellClicked}
               enableSorting="true"
               enableFilter="true"
