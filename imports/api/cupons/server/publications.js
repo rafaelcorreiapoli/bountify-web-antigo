@@ -104,6 +104,18 @@ Meteor.publishComposite('cupons.meusCupons', function() {
         ownerId: userId
       });
     },
+		children: [{
+			find(cupom) {
+				return Restaurantes.find({
+					_id: cupom.restauranteId
+				}, {
+					fields: {
+						nome: 1,
+						logoUrl: 1
+					}
+				})
+			}
+		}]
   };
 });
 
@@ -123,7 +135,7 @@ Meteor.publishComposite('cupons.single', function({ id }) {
           _id: restauranteId
         }, {
           fields: {
-            name: 1,
+            nome: 1,
             logoUrl: 1
           }
         });

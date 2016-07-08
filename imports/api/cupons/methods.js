@@ -3,6 +3,7 @@ import { check } from 'meteor/check';
 import { _ } from 'meteor/underscore';
 import { Random } from 'meteor/random';
 import { Restaurantes } from '/imports/api/restaurantes/restaurantes';
+import { Questionarios } from '/imports/api/questionarios/questionarios';
 import { Promocoes } from '/imports/api/promocoes/promocoes';
 import { Cupons } from './cupons';
 import { moment } from 'meteor/momentjs:moment';
@@ -14,37 +15,44 @@ export const insert = new ValidatedMethod({
 	},
 	run({restauranteId}) {
 		const restaurante = Restaurantes.findOne(restauranteId);
-		const promocoes = Promocoes.find({
+		const promocao = Promocoes.findOne({
 			restauranteId,
 			ativa: true
 		}, {
 			fields: {
 				_id: 1
 			}
-		}).fetch();
-		const promocoesId = _.pluck(promocoes, '_id');
-
-		const questionarioId = restaurante.questionarioId;
+		});
+		const questionario = Questionarios.findOne({
+			restauranteId,
+			ativo: true
+		}, {
+			fields: {
+				_id: 1
+			}
+		})
+		const promocaoId = promocao._id
+		const questionarioId = questionario._id
 		const userId = Meteor.userId();
 		const geradoEm = new Date();
 		const token = Random.hexString(10);
-
-		const diasParaVencer = 10; // TODO
+		const diasParaVencer = 1; // TODO
 
 		const validoAte = moment(geradoEm).add(diasParaVencer, 'days').toDate();
 		const utilizado = false;
 
-		const path = './qr.png';
 		const newCupom = {
 			restauranteId,
 			userId,
-			promocoesId,
+			promocaoId,
+			questionarioId,
 			token,
 			geradoEm,
 			validoAte,
 			utilizado
 		};
 
+		console.log(newCupom)
 
 		let id =  Cupons.insert(newCupom);
 		return {

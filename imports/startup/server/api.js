@@ -29,3 +29,8 @@ import '/imports/api/vouchers/methods';
 
 
 import '/imports/api/produtos';
+
+
+import vouchers from '/imports/api/vouchers'
+
+vouchers()

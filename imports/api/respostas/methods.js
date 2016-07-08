@@ -4,10 +4,12 @@ import { Respostas } from './respostas';
 import { Perguntas } from '/imports/api/perguntas/perguntas';
 import { Restaurantes } from '/imports/api/restaurantes/restaurantes';
 import { Cupons } from '/imports/api/cupons/cupons';
+import { Random } from 'meteor/random';
 import { Promocoes } from '/imports/api/promocoes/promocoes';
 import { Questionarios } from '/imports/api/questionarios/questionarios';
-import { TIPOS_PERGUNTA } from '/imports/api/perguntas/schema';
-
+import { Vouchers } from '/imports/api/vouchers/vouchers';
+import { TIPOS } from '/imports/api/perguntas/schema';
+import { _ }  from 'meteor/underscore'
 export const processarRespostas = new ValidatedMethod({
 	name: 'respostas.processarRespostas',
 	validate({respostas, cupomId}) {
@@ -38,7 +40,7 @@ export const processarRespostas = new ValidatedMethod({
 			throw new Meteor.Error('respostas.processarRespostas.cupomInvalido')
 		}
 
-		const { questionarioId, promocaoId } = cupom
+		const { questionarioId, promocaoId, restauranteId } = cupom
 
 
 		// Conferir se respondeu tudo que precisava
@@ -48,8 +50,10 @@ export const processarRespostas = new ValidatedMethod({
 			fields: {
 				_id: 1
 			}
-		});
+		}).fetch();
 
+		console.log("respostas", _.pluck(respostas, 'perguntaId'))
+		console.log("respostasNecessarias", respostasNecessarias)
 		respostasNecessarias.forEach(respostaNecessaria => {
 			const temResposta = respostas.find(resposta => resposta.perguntaId === respostaNecessaria._id);
 			if (!temResposta) {
@@ -74,29 +78,24 @@ export const processarRespostas = new ValidatedMethod({
 			//	Transformar val em conteudo de resposta
 			let conteudo;
 			switch (tipo) {
-				case (TIPOS_PERGUNTA.TEXT):
+				case (TIPOS.STRING):
 					conteudo = {
-						text: val
+						string: val
 					};
 					break;
-				case (TIPOS_PERGUNTA.CHECKBOX):
+				case (TIPOS.ARRAY):
 					conteudo = {
 						array: val
 					};
 					break;
-				case (TIPOS_PERGUNTA.SELECT):
-					conteudo = {
-						text: val
-					};
-					break;
-				case (TIPOS_PERGUNTA.RATE):
+				case (TIPOS.NUMBER):
 					conteudo = {
 						number: val
 					};
 					break;
-				case (TIPOS_PERGUNTA.SLIDER):
+				case (TIPOS.DATE):
 					conteudo = {
-						number: val
+						date: val
 					};
 					break;
 				default:
@@ -128,5 +127,20 @@ export const processarRespostas = new ValidatedMethod({
 				utilizadoEm: data
 			}
 		});
+
+
+		const promocao = Promocoes.findOne(promocaoId)
+		const token = Random.hexString(10);
+
+		Vouchers.insert({
+			restauranteId,
+			ownerId: userId,
+			questionarioId,
+			promocaoId,
+			geradoEm: data,
+			validoAte: promocao.validoAte,
+			utilizado: false,
+			token,
+		})
 	}
 });

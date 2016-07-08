@@ -3,20 +3,21 @@ import { insert } from '/imports/api/questionarios/methods'
 import { Button } from 'react-bootstrap'
 import t from 'tcomb-form'
 import NotificationSystem from 'react-notification-system'
-import { TIPOS_PERGUNTA } from '/imports/api/perguntas/schema'
+import { TIPOS, WIDGETS } from '/imports/api/perguntas/schema'
 
 const Widgets = t.enums({
-  [TIPOS_PERGUNTA.TEXT]: 'Text',
-  [TIPOS_PERGUNTA.CHECKBOX]: 'Checkbox',
-  [TIPOS_PERGUNTA.SELECT]: 'Select',
-  [TIPOS_PERGUNTA.SLIDER]: 'Slider',
-  [TIPOS_PERGUNTA.IMAGE_SELECT]: 'Image Select'
+  [WIDGETS.TEXT]: 'Text',
+  [WIDGETS.CHECKBOX]: 'Checkbox',
+  [WIDGETS.SELECT]: 'Select',
+  [WIDGETS.SLIDER]: 'Slider',
+  [WIDGETS.IMAGE_SELECT]: 'Image Select',
+  [WIDGETS.RATING]: 'Rating'
 })
 const Tipos = t.enums({
-  array: 'Array',
-  number: 'Number',
-  string: 'String',
-  date: 'Date'
+  [TIPOS.ARRAY]: 'Array',
+  [TIPOS.NUMBER]: 'Number',
+  [TIPOS.STRING]: 'String',
+  [TIPOS.DATE]: 'Date'
 })
 
 const BaseWidget = t.struct({
@@ -73,18 +74,18 @@ const SelectWidget = BaseWidget.extend({
 const Widget = t.union([TextWidget, SliderWidget, CheckboxWidget, RatingWidget, ImageSelectWidget])
 
 Widget.dispatch = (value) => {
-  widget = value && value.widget ? value.widget : TIPOS_PERGUNTA.TEXT
+  widget = value && value.widget ? value.widget : WIDGETS.TEXT
 
   switch(widget) {
-    case TIPOS_PERGUNTA.TEXT:
+    case WIDGETS.TEXT:
     return TextWidget
-    case TIPOS_PERGUNTA.CHECKBOX:
+    case WIDGETS.CHECKBOX:
     return CheckboxWidget
-    case TIPOS_PERGUNTA.RATE:
-    return SliderWidget
-    case TIPOS_PERGUNTA.SELECT:
+    case WIDGETS.RATING:
+    return RatingWidget
+    case WIDGETS.SELECT:
     return SelectWidget
-    case TIPOS_PERGUNTA.IMAGE_SELECT:
+    case WIDGETS.IMAGE_SELECT:
     return SelectWidget
   }
 }

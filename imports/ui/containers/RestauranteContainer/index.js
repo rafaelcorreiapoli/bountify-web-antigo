@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import RestaurantePage from '/imports/ui/pages/RestaurantePage';
 import { Restaurantes } from '/imports/api/restaurantes/restaurantes';
 import { createContainer } from 'meteor/react-meteor-data';
 import RestauranteCard from '/imports/ui/components/RestauranteCard'

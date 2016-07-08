@@ -1,12 +1,19 @@
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-export const TIPOS_PERGUNTA = {
+export const WIDGETS = {
 	TEXT: 'text',
 	CHECKBOX: 'checkbox',
 	SELECT: 'select',
-	RATE: 'rate',
+	RATING: 'rate',
 	SLIDER: 'slider',
 	IMAGE_SELECT: 'imageSelect'
+};
+
+export const TIPOS = {
+	ARRAY: 'array',
+	NUMBER: 'number',
+	STRING: 'string',
+	DATE: 'date',
 };
 
 export const PerguntaSchema = new SimpleSchema({

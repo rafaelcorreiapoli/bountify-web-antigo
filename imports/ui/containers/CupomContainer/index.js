@@ -1,11 +1,16 @@
 import React from 'react';
 import { Cupons } from '/imports/api/cupons/cupons';
 import { createContainer } from 'meteor/react-meteor-data';
+import QRCode from 'qrcode.react';
 
 class CupomContainer extends React.Component {
   render () {
-    const { cupomId } = this.props
-    return <div>{cupomId}</div>
+    const { cupomId, cupom } = this.props
+    return (
+      <div>
+        <QRCode value={cupom.token} size={400} />
+      </div>
+    )
   }
 }
 
