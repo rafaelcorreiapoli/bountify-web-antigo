@@ -4,17 +4,22 @@ export const CupomSchema = new SimpleSchema({
 	restauranteId: {
 		type: String
 	},
-	userId: {
-		type: String
-	},
+	//DELETAR ISSO
 	promocoesId: {
-		type: [String]
+		type: [String],
+		optional: true
+	},
+	promocaoId: {
+		type: String
 	},
 	token: {
 		type: String
 	},
 	geradoEm: {
 		type: Date
+	},
+	geradoPor: {
+		type: String
 	},
 	obtidoEm: {
 		type: Date,
@@ -33,6 +38,8 @@ export const CupomSchema = new SimpleSchema({
 	},
 	utilizado: {
 		type: Boolean
+	},
+	questionarioId: {
+		type: String
 	}
 });
-

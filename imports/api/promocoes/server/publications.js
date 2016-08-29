@@ -3,9 +3,25 @@ import { Promocoes } from '../promocoes';
 import { Questionarios } from '../../questionarios/questionarios';
 import { Perguntas } from '../../perguntas/perguntas';
 import { Restaurantes } from '../../restaurantes/restaurantes';
+import { Produtos } from '/imports/api/produtos/produtos';
 import { check } from 'meteor/check';
 
 
+Meteor.publishComposite('promocoes.ativas', function() {
+  return {
+    find() {
+      return Promocoes.find({ativa: true});
+    },
+    children: [{
+      find(promocao) {
+        const { restauranteId } = promocao
+        return Restaurantes.find({
+          _id: restauranteId
+        })
+      }
+    }]
+  }
+})
 
 Meteor.publishComposite('promocoes', function() {
   return {
@@ -13,13 +29,6 @@ Meteor.publishComposite('promocoes', function() {
       return Promocoes.find();
     },
     children: [{
-      find(promocao) {
-        const { questionarioId } = promocao;
-        return Questionarios.find({
-          _id: questionarioId
-        })
-      }
-    }, {
       find(promocao) {
         const { restauranteId } = promocao;
         return Restaurantes.find({
@@ -63,13 +72,34 @@ Meteor.publishComposite('promocoes.porRestaurante', function({ restauranteId }) 
 });
 
 
-Meteor.publishComposite('promocoes.single', function({ id }) {
-  check(id, String);
+Meteor.publishComposite('promocoes.single', function({ promocaoId }) {
+  check(promocaoId, String);
   return {
     find() {
       return Promocoes.find({
-        _id: id
+        _id: promocaoId
       });
     },
+    children: [{
+      find(promocao) {
+        return Produtos.find({
+          promocaoId: promocao._id
+        })
+      }
+    }, {
+      find(promocao) {
+        return Restaurantes.find({
+          _id: promocao.restauranteId
+        })
+      },
+      children: [{
+        find(restaurante) {
+          return Questionarios.find({
+            restauranteId: restaurante._id,
+            ativo: true
+          })
+        }
+      }]
+    }],
   };
 });

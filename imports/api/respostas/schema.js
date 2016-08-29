@@ -14,7 +14,7 @@ export const RespostaSchema = new SimpleSchema({
 		type: String
 	},
 	tipo: {
-		type: Number
+		type: String
 	},
 	conteudo: {
 		type: Object,
@@ -24,4 +24,3 @@ export const RespostaSchema = new SimpleSchema({
 		type: Date
 	}
 });
-

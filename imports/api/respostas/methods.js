@@ -4,132 +4,105 @@ import { Respostas } from './respostas';
 import { Perguntas } from '/imports/api/perguntas/perguntas';
 import { Restaurantes } from '/imports/api/restaurantes/restaurantes';
 import { Cupons } from '/imports/api/cupons/cupons';
+import { Random } from 'meteor/random';
 import { Promocoes } from '/imports/api/promocoes/promocoes';
 import { Questionarios } from '/imports/api/questionarios/questionarios';
-import { TIPOS_PERGUNTA } from '/imports/api/perguntas/schema';
-
+import { Vouchers } from '/imports/api/vouchers/vouchers';
+import { TIPOS } from '/imports/api/perguntas/schema';
+import { _ }  from 'meteor/underscore'
 export const processarRespostas = new ValidatedMethod({
 	name: 'respostas.processarRespostas',
-	validate({respostas, promocaoId, questionarioId, token}) {
+	validate({respostas, cupomId}) {
 		check(respostas, [{
 			perguntaId: String,
 			val: Match.OneOf(Number, [Number], String, [String], Boolean, [Boolean]),
 		}]);
-		check(promocaoId, String);
-		check(questionarioId, String);
-		check(token, String);
+		check(cupomId, String);
 	},
-	run({respostas, promocaoId, questionarioId, token}) {
+	run({respostas, cupomId}) {
 		let userId = Meteor.userId();
+		console.log(userId)
 		let data = new Date();
 
-		//
-		// Checar se a promocação existe
-		//
-		let promocao = Promocoes.findOne(promocaoId);
-		if (!promocao) throw new Meteor.Error('respostas.processarRespostas.promocaoNaoEncontrada');
-
-		//
-		// É o questionário que a empresa quer que seja respondido ?
-		//
-		const { restauranteId } = promocao;
-		const restaurante = Restaurantes.findOne(restauranteId);
-
-		if (restaurante.questionarioId !== questionarioId) throw new Meteor.Error('respostas.processarRespostas.questionarioInvalido')
-
-		//
-		// Validar Cupom no Restaurante
-		//
+		// Checar cupom
 		const cupom = Cupons.findOne({
+			_id: cupomId,
 			ownerId: userId,
-			token,
-			restauranteId,
-			utilizado: false
-		});
+			utilizado: false,
+			validoAte: {
+				$gte: data
+			}
+		})
 
-		if (!cupom) throw new Meteor.Error('respostas.processarRespostas.cupomInvalido');
+		console.log(cupomId)
+		console.log(cupom)
+		if (!cupom) {
+			throw new Meteor.Error('respostas.processarRespostas.cupomInvalido')
+		}
 
-		//	Verificar se usuário já respondeu esse questionario para essa promoção
-		//
-		// let questionarioJaRespondido = Questionarios.findOne({
-		// 	_id: questionarioId,
-		// 	'responderam.userId': userId,
-		// 	'responderam.promocaoId': promocaoId
-		// });
+		const { questionarioId, promocaoId, restauranteId } = cupom
 
-		// if (questionarioJaRespondido) {
-		// 	throw new Meteor.Error('respostas.processarRespostas.questionarioJaRespondido');
-		// }
 
-		//
 		// Conferir se respondeu tudo que precisava
-		//
-		let respostasNecessarias = Perguntas.find({
+		const respostasNecessarias = Perguntas.find({
 			questionarioId
 		}, {
 			fields: {
 				_id: 1
 			}
-		});
-		respostasNecessarias.forEach((respostaNecessaria) => {
-			let temResposta = respostas.find(resposta => resposta.perguntaId === respostaNecessaria._id);
+		}).fetch();
+
+		console.log("respostas", _.pluck(respostas, 'perguntaId'))
+		console.log("respostasNecessarias", respostasNecessarias)
+		respostasNecessarias.forEach(respostaNecessaria => {
+			const temResposta = respostas.find(resposta => resposta.perguntaId === respostaNecessaria._id);
 			if (!temResposta) {
-				throw new Meteor.Error('respostas.processarRespostas.respostaNaoEncontrada');
+				throw new Meteor.Error('respostas.processarRespostas.respostasInsuficientes');
 			}
 		});
-
-
-		// if (promocao.questionarioId !== questionarioId) {
-		// 	throw new Meteor.Error('respostas.processarResposta.questionarioInconsistente');
-		// }
 
 		respostas.forEach((resposta) => {
 			let { perguntaId, val } = resposta;
 
-			//
 			//	Checar se a pergunta realmente existe
-			//
 			let pergunta = Perguntas.findOne({
 				_id: perguntaId,
 				questionarioId: questionarioId
 			});
 
-			if (!pergunta) throw new Meteor.Error('respostas.processarRespostas.perguntaNaoEncontrada');
+			if (!pergunta) {
+				throw new Meteor.Error('respostas.processarRespostas.perguntaNaoEncontrada');
+			}
+
 			let { tipo } = pergunta;
-
-
-			//
 			//	Transformar val em conteudo de resposta
-			//
 			let conteudo;
 			switch (tipo) {
-				case (TIPOS_PERGUNTA.TEXT):
+				case (TIPOS.STRING):
 					conteudo = {
-						text: val
+						string: val
 					};
 					break;
-				case (TIPOS_PERGUNTA.CHECKBOX):
+				case (TIPOS.ARRAY):
 					conteudo = {
 						array: val
 					};
 					break;
-				case (TIPOS_PERGUNTA.SELECT):
-					conteudo = {
-						text: val
-					};
-					break;
-				case (TIPOS_PERGUNTA.RATE):
+				case (TIPOS.NUMBER):
 					conteudo = {
 						number: val
+					};
+					break;
+				case (TIPOS.DATE):
+					conteudo = {
+						date: val
 					};
 					break;
 				default:
 					throw new Meteor.Error('respostas.processarRespostas.tipoDesconhecido');
 			}
 
-			//
 			//	Gerar objeto de resposta
-			//
 
 			const obj = {
 				perguntaId,
@@ -141,24 +114,8 @@ export const processarRespostas = new ValidatedMethod({
 				promocaoId
 			};
 
-			//
 			//	Guardar no banco de dados
-			//
 			Respostas.insert(obj);
-		});
-
-		let questionarioRespondido = {
-			userId,
-			promocaoId,
-			data
-		};
-
-		Questionarios.update({
-			_id: questionarioId
-		}, {
-			$push: {
-				responderam: questionarioRespondido
-			}
 		});
 
 		const {_id } = cupom;
@@ -170,5 +127,20 @@ export const processarRespostas = new ValidatedMethod({
 				utilizadoEm: data
 			}
 		});
+
+
+		const promocao = Promocoes.findOne(promocaoId)
+		const token = Random.hexString(10);
+
+		Vouchers.insert({
+			restauranteId,
+			ownerId: userId,
+			questionarioId,
+			promocaoId,
+			geradoEm: data,
+			validoAte: promocao.validoAte,
+			utilizado: false,
+			token,
+		})
 	}
 });

@@ -14,10 +14,7 @@ tracker                 # Meteor's client-side reactive programming library
 standard-minifier-css   # CSS minifier run for production mode
 standard-minifier-js    # JS minifier run for production mode
 es5-shim                # ECMAScript 5 compatibility for older browsers.
-ecmascript              # Enable ECMAScript2015+ syntax in app code
-
 meteortoys:allthings
-useraccounts:unstyled
 accounts-password
 react-meteor-data
 static-html
@@ -27,4 +24,10 @@ aldeed:collection2
 check
 reywood:publish-composite
 momentjs:moment
-twbs:bootstrap
+gadicc:ecmascript-hot@2.0.0-beta.4
+fortawesome:fontawesome
+service-configuration
+alanning:roles
+useraccounts:core
+useraccounts:bootstrap
+gadicc:blaze-react-component

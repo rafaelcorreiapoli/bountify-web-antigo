@@ -7,10 +7,6 @@ export const RestauranteSchema = new SimpleSchema({
 	categoria: {
 		type: String
 	},
-	nota: {
-		type: Number,
-		decimal: true
-	},
 	lat: {
 		type: Number,
 		decimal: true,
@@ -25,7 +21,10 @@ export const RestauranteSchema = new SimpleSchema({
 		type: String
 	},
 	questionarioId: {
+		type: String,
+		optional: true
+	},
+	backgroundUrl: {
 		type: String
 	}
 });
-

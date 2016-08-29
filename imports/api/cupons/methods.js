@@ -3,6 +3,7 @@ import { check } from 'meteor/check';
 import { _ } from 'meteor/underscore';
 import { Random } from 'meteor/random';
 import { Restaurantes } from '/imports/api/restaurantes/restaurantes';
+import { Questionarios } from '/imports/api/questionarios/questionarios';
 import { Promocoes } from '/imports/api/promocoes/promocoes';
 import { Cupons } from './cupons';
 import { moment } from 'meteor/momentjs:moment';
@@ -10,42 +11,82 @@ import { moment } from 'meteor/momentjs:moment';
 export const insert = new ValidatedMethod({
 	name: 'cupons.insert',
 	validate({restauranteId}) {
-		check(restauranteId, String);
+		if (Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+			check(restauranteId, String)
+		} else if (Roles.userIsInRole(Meteor.userId(), ['restaurante'])) {
+			check(restauranteId, Match.Optional(String))
+		}
 	},
 	run({restauranteId}) {
-		const restaurante = Restaurantes.findOne(restauranteId);
-		const promocoes = Promocoes.find({
-			restauranteId,
+		let acceptedRestauranteId;
+
+		if (Roles.userIsInRole(Meteor.userId(), ['restaurante'])) {
+			acceptedRestauranteId = Meteor.user().restauranteId
+		} else {
+			acceptedRestauranteId = restauranteId
+		}
+
+		if (!acceptedRestauranteId) {
+			throw new Meteor.Error('cupons.insert.restauranteNotDefined')
+		}
+
+		console.log(Meteor.user())
+		console.log(acceptedRestauranteId)
+
+		const restaurante = Restaurantes.findOne(acceptedRestauranteId);
+
+		const promocao = Promocoes.findOne({
+			restauranteId: acceptedRestauranteId,
 			ativa: true
 		}, {
 			fields: {
 				_id: 1
 			}
-		}).fetch();
-		const promocoesId = _.pluck(promocoes, '_id');
-
-		const questionarioId = restaurante.questionarioId;
-		const userId = Meteor.userId();
+		});
+		const questionario = Questionarios.findOne({
+			restauranteId: acceptedRestauranteId,
+			ativo: true
+		}, {
+			fields: {
+				_id: 1
+			}
+		})
+		const promocaoId = promocao._id
+		const questionarioId = questionario._id
+		const geradoPor = Meteor.userId();
 		const geradoEm = new Date();
 		const token = Random.hexString(10);
-
-		const diasParaVencer = 10; // TODO
+		const diasParaVencer = 1; // TODO
 
 		const validoAte = moment(geradoEm).add(diasParaVencer, 'days').toDate();
 		const utilizado = false;
 
-		const path = './qr.png';
 		const newCupom = {
-			restauranteId,
-			userId,
-			promocoesId,
+			restauranteId: acceptedRestauranteId,
+			geradoPor,
+			promocaoId,
+			questionarioId,
 			token,
 			geradoEm,
 			validoAte,
 			utilizado
 		};
 
-		return Cupons.insert(newCupom);
+		let _id =  Cupons.insert(newCupom);
+
+		if (_id) {
+			Meteor.users.update({
+				_id: geradoPor,
+			}, {
+				$inc: {
+					cuponsGerados: 1
+				}
+			})
+		}
+		return {
+			_id,
+			token
+		}
 	}
 });
 
@@ -74,7 +115,7 @@ export const claim = new ValidatedMethod({
 		}
 
 		const { _id } = cupom;
-	
+
 		return Cupons.update({_id
 		}, {
 			$set: {

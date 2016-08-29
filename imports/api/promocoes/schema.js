@@ -21,7 +21,8 @@ export const PromocaoSchema = new SimpleSchema({
 		type: String
 	},
 	ativa: {
-		type: Boolean
+		type: Boolean,
+		optional: true,
+		defaultValue: false
 	}
 });
-

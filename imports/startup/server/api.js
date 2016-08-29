@@ -1,3 +1,5 @@
+import '/imports/api/users';
+
 import '/imports/api/restaurantes';
 import '/imports/api/restaurantes/server/publications';
 import '/imports/api/restaurantes/methods';
@@ -22,3 +24,15 @@ import '/imports/api/respostas/methods';
 import '/imports/api/cupons';
 import '/imports/api/cupons/server/publications';
 import '/imports/api/cupons/methods';
+
+import '/imports/api/vouchers';
+import '/imports/api/vouchers/server/publications';
+import '/imports/api/vouchers/methods';
+
+
+import '/imports/api/produtos';
+
+
+import vouchers from '/imports/api/vouchers'
+
+vouchers()
