@@ -19,7 +19,7 @@ const SidebarItem = ({
 }
 const Sidebar = (props) => {
   return (
-    <div className="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
+    <div className="sidebar" data-color="red">
       <div className="sidebar-wrapper">
         <div className="logo">
           <a href="#" className="simple-text">
@@ -29,10 +29,10 @@ const Sidebar = (props) => {
 
         <ul className="nav">
           <SidebarItem to="restaurantes" label="Restaurantes" icon="fa fa-user" eventKey={1} />
-          <SidebarItem to="promocoes" label="Promoções" icon="fa fa-user" eventKey={2} />
-          <SidebarItem to="vouchers" label="Vouchers" icon="fa fa-user" eventKey={3} />
-          <SidebarItem to="questionarios" label="Questionários" icon="fa fa-user" eventKey={4} />
-          <SidebarItem to="cupons" label="Cupons" icon="fa fa-user" eventKey={5} />
+          <SidebarItem to="promocoes" label="Promoções" icon="fa fa-star" eventKey={2} />
+          <SidebarItem to="vouchers" label="Vouchers" icon="fa fa-gift" eventKey={3} />
+          <SidebarItem to="questionarios" label="Questionários" icon="fa fa-list-ol" eventKey={4} />
+          <SidebarItem to="cupons" label="Cupons" icon="fa fa-qrcode" eventKey={5} />
         </ul>
       </div>
     </div>

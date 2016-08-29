@@ -4,6 +4,8 @@ import { Restaurantes } from '/imports/api/restaurantes/restaurantes';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Grid, Row, Col, Button } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
+import { composeWithTracker } from 'react-komposer'
+
 class RestaurantesContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -25,24 +27,18 @@ class RestaurantesContainer extends React.Component {
       <div>
         <Row>
           <Col md={12}>
+            <RestaurantesList
+              onRestauranteClick={this.handleRestauranteClick}
+              restaurantes={restaurantes} />
+          </Col>
+        </Row>
+        <Row style={{marginTop: 20}}>
+          <Col md={12}>
             <LinkContainer to='/restaurantes/add'>
                <Button bsStyle="primary"> Criar Restaurante</Button>
             </LinkContainer>
           </Col>
         </Row>
-        <Row>
-          <Col md={12}>
-            {
-              restaurantesReady ?
-                <RestaurantesList
-                  onRestauranteClick={this.handleRestauranteClick}
-                  restaurantes={restaurantes} />
-              :
-              <span>Loading...</span>
-            }
-          </Col>
-        </Row>
-
       </div>
     );
   }
@@ -52,12 +48,15 @@ RestaurantesContainer.contextTypes =  {
   router: React.PropTypes.object
 }
 
-export default createContainer(({ params: { id } }) => {
+const composer = (props, onData) => {
+  const { params: { id } } = props
+
   const restaurantesHandle = Meteor.subscribe('restaurantes');
   const restaurantesReady = restaurantesHandle.ready();
   const restaurantes = Restaurantes.find().fetch();
-  return {
+  onData(null, {
     restaurantesReady,
     restaurantes
-  };
-}, RestaurantesContainer);
+  });
+}
+export default composeWithTracker(composer)(RestaurantesContainer);

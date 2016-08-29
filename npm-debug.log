@@ -1,0 +1,82 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'useraccounts:core',
+1 verbose cli   'useraccounts:bootstrap' ]
+2 info using npm@3.9.5
+3 info using node@v6.2.2
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData useraccounts:core
+8 silly fetchPackageMetaData useraccounts:bootstrap
+9 silly fetchPackageMetaData Error: Unsupported URL Type: useraccounts:core
+9 silly fetchPackageMetaData     at parseUrl (/usr/local/lib/node_modules/npm/node_modules/npm-package-arg/npa.js:175:13)
+9 silly fetchPackageMetaData     at npa (/usr/local/lib/node_modules/npm/node_modules/npm-package-arg/npa.js:75:12)
+9 silly fetchPackageMetaData     at module.exports (/usr/local/lib/node_modules/npm/node_modules/realize-package-specifier/index.js:12:15)
+9 silly fetchPackageMetaData     at fetchPackageMetadata (/usr/local/lib/node_modules/npm/lib/fetch-package-metadata.js:54:12)
+9 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/lib/install/deps.js:216:5
+9 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:52:35
+9 silly fetchPackageMetaData     at Array.forEach (native)
+9 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:52:11
+9 silly fetchPackageMetaData     at Array.forEach (native)
+9 silly fetchPackageMetaData     at asyncMap (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:51:8)
+9 silly fetchPackageMetaData  error for useraccounts:core Error: Unsupported URL Type: useraccounts:core
+9 silly fetchPackageMetaData     at parseUrl (/usr/local/lib/node_modules/npm/node_modules/npm-package-arg/npa.js:175:13)
+9 silly fetchPackageMetaData     at npa (/usr/local/lib/node_modules/npm/node_modules/npm-package-arg/npa.js:75:12)
+9 silly fetchPackageMetaData     at module.exports (/usr/local/lib/node_modules/npm/node_modules/realize-package-specifier/index.js:12:15)
+9 silly fetchPackageMetaData     at fetchPackageMetadata (/usr/local/lib/node_modules/npm/lib/fetch-package-metadata.js:54:12)
+9 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/lib/install/deps.js:216:5
+9 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:52:35
+9 silly fetchPackageMetaData     at Array.forEach (native)
+9 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:52:11
+9 silly fetchPackageMetaData     at Array.forEach (native)
+9 silly fetchPackageMetaData     at asyncMap (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:51:8)
+10 silly fetchPackageMetaData Error: Unsupported URL Type: useraccounts:bootstrap
+10 silly fetchPackageMetaData     at parseUrl (/usr/local/lib/node_modules/npm/node_modules/npm-package-arg/npa.js:175:13)
+10 silly fetchPackageMetaData     at npa (/usr/local/lib/node_modules/npm/node_modules/npm-package-arg/npa.js:75:12)
+10 silly fetchPackageMetaData     at module.exports (/usr/local/lib/node_modules/npm/node_modules/realize-package-specifier/index.js:12:15)
+10 silly fetchPackageMetaData     at fetchPackageMetadata (/usr/local/lib/node_modules/npm/lib/fetch-package-metadata.js:54:12)
+10 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/lib/install/deps.js:216:5
+10 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:52:35
+10 silly fetchPackageMetaData     at Array.forEach (native)
+10 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:52:11
+10 silly fetchPackageMetaData     at Array.forEach (native)
+10 silly fetchPackageMetaData     at asyncMap (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:51:8)
+10 silly fetchPackageMetaData  error for useraccounts:bootstrap Error: Unsupported URL Type: useraccounts:bootstrap
+10 silly fetchPackageMetaData     at parseUrl (/usr/local/lib/node_modules/npm/node_modules/npm-package-arg/npa.js:175:13)
+10 silly fetchPackageMetaData     at npa (/usr/local/lib/node_modules/npm/node_modules/npm-package-arg/npa.js:75:12)
+10 silly fetchPackageMetaData     at module.exports (/usr/local/lib/node_modules/npm/node_modules/realize-package-specifier/index.js:12:15)
+10 silly fetchPackageMetaData     at fetchPackageMetadata (/usr/local/lib/node_modules/npm/lib/fetch-package-metadata.js:54:12)
+10 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/lib/install/deps.js:216:5
+10 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:52:35
+10 silly fetchPackageMetaData     at Array.forEach (native)
+10 silly fetchPackageMetaData     at /usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:52:11
+10 silly fetchPackageMetaData     at Array.forEach (native)
+10 silly fetchPackageMetaData     at asyncMap (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:51:8)
+11 silly rollbackFailedOptional Starting
+12 silly rollbackFailedOptional Finishing
+13 silly runTopLevelLifecycles Starting
+14 silly runTopLevelLifecycles Finishing
+15 silly install printInstalled
+16 verbose stack Error: Unsupported URL Type: useraccounts:core
+16 verbose stack     at parseUrl (/usr/local/lib/node_modules/npm/node_modules/npm-package-arg/npa.js:175:13)
+16 verbose stack     at npa (/usr/local/lib/node_modules/npm/node_modules/npm-package-arg/npa.js:75:12)
+16 verbose stack     at module.exports (/usr/local/lib/node_modules/npm/node_modules/realize-package-specifier/index.js:12:15)
+16 verbose stack     at fetchPackageMetadata (/usr/local/lib/node_modules/npm/lib/fetch-package-metadata.js:54:12)
+16 verbose stack     at /usr/local/lib/node_modules/npm/lib/install/deps.js:216:5
+16 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:52:35
+16 verbose stack     at Array.forEach (native)
+16 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:52:11
+16 verbose stack     at Array.forEach (native)
+16 verbose stack     at asyncMap (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:51:8)
+17 verbose cwd /media/rafa93br/Media/meteor/bountify-web
+18 error Linux 4.4.0-31-generic
+19 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "useraccounts:core" "useraccounts:bootstrap"
+20 error node v6.2.2
+21 error npm  v3.9.5
+22 error Unsupported URL Type: useraccounts:core
+23 error If you need help, you may report this error at:
+23 error     <https://github.com/npm/npm/issues>
+24 verbose exit [ 1, true ]

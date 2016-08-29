@@ -4,6 +4,8 @@ import { Promocoes } from '/imports/api/promocoes/promocoes';
 import { createContainer } from 'meteor/react-meteor-data';
 import { toggleAtiva } from '/imports/api/promocoes/methods'
 import NotificationSystem from 'react-notification-system'
+import { composeWithTracker } from 'react-komposer';
+
 class PromocoesContainer extends Component {
   constructor(props) {
     super(props)
@@ -15,7 +17,6 @@ class PromocoesContainer extends Component {
     const { notificationSystem } = this.refs
     toggleAtiva.call({promocaoId: _id}, (err, res) => {
       if (err) {
-        console.log(err)
         notificationSystem.addNotification({
           message: `Algum erro ocorreu ${err.reason}.`,
           level: 'error'
@@ -35,7 +36,7 @@ class PromocoesContainer extends Component {
     router.push(`/restaurante/${restauranteId}/promocao/${_id}`)
   }
 
-  render () {
+  render() {
     let { promocoes, promocoesReady } = this.props
 
     return (

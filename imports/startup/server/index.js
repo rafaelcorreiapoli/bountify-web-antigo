@@ -1,6 +1,8 @@
 import './api.js';
-import FacebookOAuthInit from './oauth-facebook';
+import configAccounts from './accounts_config.js';
+import facebookOAuthInit from './oauth-facebook';
 
 Meteor.startup(function() {
-  FacebookOAuthInit()
+  facebookOAuthInit()
+  configAccounts()
 })

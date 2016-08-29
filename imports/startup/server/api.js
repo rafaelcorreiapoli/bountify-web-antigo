@@ -1,3 +1,5 @@
+import '/imports/api/users';
+
 import '/imports/api/restaurantes';
 import '/imports/api/restaurantes/server/publications';
 import '/imports/api/restaurantes/methods';

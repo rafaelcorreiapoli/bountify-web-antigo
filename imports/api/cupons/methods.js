@@ -11,12 +11,32 @@ import { moment } from 'meteor/momentjs:moment';
 export const insert = new ValidatedMethod({
 	name: 'cupons.insert',
 	validate({restauranteId}) {
-		check(restauranteId, String);
+		if (Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+			check(restauranteId, String)
+		} else if (Roles.userIsInRole(Meteor.userId(), ['restaurante'])) {
+			check(restauranteId, Match.Optional(String))
+		}
 	},
 	run({restauranteId}) {
-		const restaurante = Restaurantes.findOne(restauranteId);
+		let acceptedRestauranteId;
+
+		if (Roles.userIsInRole(Meteor.userId(), ['restaurante'])) {
+			acceptedRestauranteId = Meteor.user().restauranteId
+		} else {
+			acceptedRestauranteId = restauranteId
+		}
+
+		if (!acceptedRestauranteId) {
+			throw new Meteor.Error('cupons.insert.restauranteNotDefined')
+		}
+
+		console.log(Meteor.user())
+		console.log(acceptedRestauranteId)
+
+		const restaurante = Restaurantes.findOne(acceptedRestauranteId);
+
 		const promocao = Promocoes.findOne({
-			restauranteId,
+			restauranteId: acceptedRestauranteId,
 			ativa: true
 		}, {
 			fields: {
@@ -24,7 +44,7 @@ export const insert = new ValidatedMethod({
 			}
 		});
 		const questionario = Questionarios.findOne({
-			restauranteId,
+			restauranteId: acceptedRestauranteId,
 			ativo: true
 		}, {
 			fields: {
@@ -33,7 +53,7 @@ export const insert = new ValidatedMethod({
 		})
 		const promocaoId = promocao._id
 		const questionarioId = questionario._id
-		const userId = Meteor.userId();
+		const geradoPor = Meteor.userId();
 		const geradoEm = new Date();
 		const token = Random.hexString(10);
 		const diasParaVencer = 1; // TODO
@@ -42,8 +62,8 @@ export const insert = new ValidatedMethod({
 		const utilizado = false;
 
 		const newCupom = {
-			restauranteId,
-			userId,
+			restauranteId: acceptedRestauranteId,
+			geradoPor,
 			promocaoId,
 			questionarioId,
 			token,
@@ -52,11 +72,19 @@ export const insert = new ValidatedMethod({
 			utilizado
 		};
 
-		console.log(newCupom)
+		let _id =  Cupons.insert(newCupom);
 
-		let id =  Cupons.insert(newCupom);
+		if (_id) {
+			Meteor.users.update({
+				_id: geradoPor,
+			}, {
+				$inc: {
+					cuponsGerados: 1
+				}
+			})
+		}
 		return {
-			id,
+			_id,
 			token
 		}
 	}

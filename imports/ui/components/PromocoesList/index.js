@@ -3,6 +3,7 @@ import {AgGridReact} from 'ag-grid-react';
 import {reactCellRendererFactory} from 'ag-grid-react';
 import { Image } from 'react-bootstrap'
 import BooleanIcon from '/imports/ui/components/BooleanIcon'
+import '/node_modules/ag-grid/dist/styles/theme-bootstrap.css'
 
 const AtivaCellRenderer = ({
   params: { data }
@@ -43,43 +44,39 @@ export default class PromocoesList extends React.Component {
 
     const columnDefs = [
       {
-        headerName: "Imagem",
-        field: "imageUrl",
-        cellRenderer: reactCellRendererFactory(({params: {data: {imagemUrl}}}) => <Image src={imagemUrl} style={{height: '40px'}}/>),
+        headerName: 'Imagem',
+        field: 'imageUrl',
+        cellRenderer: reactCellRendererFactory(({params: {data: {imagemUrl}}}) =>
+          <Image src={imagemUrl} style={{height: '40px'}}/>),
         cellStyle: styleFactory
       },
       {
-        headerName: "Nome",
-        field: "nome",
+        headerName: 'Nome',
+        field: 'nome',
         cellStyle: styleFactory
       },
       {
-        headerName: "Descrição", field: "descricao",
+        headerName: 'Descrição', field: 'descricao',
         cellStyle: styleFactory
       },
       {
-        headerName: "Ativa",
-        field: "ativa",
+        headerName: 'Ativa',
+        field: 'ativa',
         cellRenderer: reactCellRendererFactory(AtivaCellRenderer),
         cellStyle: styleFactory
       }
     ];
     return (
-      <div>
-        <i class="fa fa-check" />
-          <div className="ag-bootstrap" style={{height: '100%'}}>
-            <AgGridReact
-              columnDefs={columnDefs}
-              rowData={promocoes}
-              rowHeight={50}
-              onRowDoubleClicked={this.onRowDoubleClicked}
-              onCellClicked={this.handleCellClicked}
-              enableSorting="true"
-              enableFilter="true"
-              />
-          </div>
+      <div className="ag-fresh" style={{height: '100%'}}>
+        <AgGridReact
+          columnDefs={columnDefs}
+          rowData={promocoes}
+          rowHeight={50}
+          onRowDoubleClicked={this.onRowDoubleClicked}
+          onCellClicked={this.handleCellClicked}
+          enableSorting="true"
+          enableFilter="true" />
       </div>
-
     );
   }
 }

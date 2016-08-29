@@ -1,5 +1,5 @@
 import React from 'react';
-import AccountsUIWrapper from '/imports/ui/components/accounts_ui_wrapper/AccountsUIWrapper';
+import Blaze from 'meteor/gadicc:blaze-react-component';
 
 const containerStyle = {
 	width: '50%',
@@ -14,7 +14,7 @@ export default class SignIn extends React.Component {
   render() {
     return (
       <div style={containerStyle}>
-      	 <AccountsUIWrapper />
+      	 <Blaze template="atForm" state={'signIn'} />
       </div>
     );
   }

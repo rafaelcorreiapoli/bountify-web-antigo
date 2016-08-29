@@ -3,46 +3,42 @@ import { Restaurantes } from '/imports/api/restaurantes/restaurantes';
 import { createContainer } from 'meteor/react-meteor-data';
 import RestauranteCard from '/imports/ui/components/RestauranteCard'
 import { Grid, Row, Col, Tabs, Tab, Button} from 'react-bootstrap'
-
+import { composeWithTracker } from 'react-komposer'
 import {LinkContainer} from 'react-router-bootstrap'
-// import RespostasContainer from '/imports/ui/containers/RespostasContainer'
+
 class RestauranteContainer extends React.Component {
   constructor(props) {
     super(props);
   }
   render() {
-  	let {restaurante, restauranteReady, restauranteId, children} = this.props;
+    let {restaurante, restauranteReady, restauranteId, children} = this.props;
     return (
       <div>
-        {
-          restauranteReady ?
-           <Row>
-             <Col xs={12} md={2}>
-               <RestauranteCard {...restaurante} />
-             </Col>
-             <Col xs={12} md={10}>
-               {React.cloneElement(children, {restauranteId})}
-             </Col>
-           </Row>
-          :
-          <span>Loading...</span>
-         }
-
+        <Row>
+          <Col xs={12} md={2}>
+            <RestauranteCard {...restaurante} />
+          </Col>
+          <Col xs={12} md={10}>
+            {React.cloneElement(children, {restauranteId})}
+          </Col>
+        </Row>
       </div>
     );
   }
 }
 
 
-export default createContainer(({ params: { id } }) => {
+const composer = (props, onData) => {
+  const { params: { id } } = props
+
   const restauranteId = id
-  console.log('restauranteId:', restauranteId)
   const handle = Meteor.subscribe('restaurantes.single', { id: restauranteId });
   const restauranteReady = handle.ready();
   const restaurante = Restaurantes.findOne(restauranteId);
-  return {
+  onData(null, {
     restauranteReady,
     restaurante,
     restauranteId
-  };
-}, RestauranteContainer);
+  });
+}
+export default composeWithTracker(composer)(RestauranteContainer)

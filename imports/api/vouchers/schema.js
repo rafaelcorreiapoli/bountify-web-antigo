@@ -42,7 +42,15 @@ export const VoucherSchema = new SimpleSchema({
 	},
   token: {
     type: String
-  }
+  },
+	produtoSelecionado: {
+		type: String,
+		optional: true
+	},
+	validadoPor: {
+		type: String,
+		optional: true
+	}
 });
 
 export const attachSchema = () => {

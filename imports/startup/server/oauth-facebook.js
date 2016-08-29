@@ -6,20 +6,22 @@ import { _ } from 'meteor/underscore';
 
 const settings = Meteor.settings.oauth.facebook;
 
-const init = () => {
-  if (!settings) return;
-  ServiceConfiguration.configurations.upsert(
-    { service: "facebook" },
-    {
-      $set: {
-        appId: settings.appId,
-        secret: settings.secret
+// Gets the identity of our user and by extension checks if
+// our access token is valid.
+const getIdentity = (accessToken, fields) => {
+  try {
+    return HTTP.get('https://graph.facebook.com/v2.4/me', {
+      params: {
+        access_token: accessToken,
+        fields: fields
       }
-    }
-  );
+    }).data;
+  } catch (err) {
+    throw _.extend(new Error('Failed to fetch identity from Facebook. ' + err.message),
+                   {response: err.response});
+  }
+};
 
-  registerHandler();
-}
 
 const registerHandler = () => {
   Accounts.registerLoginHandler('facebook', function(params) {
@@ -62,7 +64,6 @@ const registerHandler = () => {
         $set: prefixedData,
         $addToSet: { emails: { address: identity.email, verified: true } }
       });
-
     } else {
       // Create our user
       userId = Meteor.users.insert({
@@ -81,20 +82,19 @@ const registerHandler = () => {
   });
 };
 
-// Gets the identity of our user and by extension checks if
-// our access token is valid.
-const getIdentity = (accessToken, fields) => {
-  try {
-    return HTTP.get("https://graph.facebook.com/v2.4/me", {
-      params: {
-        access_token: accessToken,
-        fields: fields
+const init = () => {
+  if (!settings) return;
+  ServiceConfiguration.configurations.upsert(
+    { service: 'facebook' },
+    {
+      $set: {
+        appId: settings.appId,
+        secret: settings.secret
       }
-    }).data;
-  } catch (err) {
-    throw _.extend(new Error("Failed to fetch identity from Facebook. " + err.message),
-                   {response: err.response});
-  }
-};
+    }
+  );
+
+  registerHandler();
+}
 
 export default init;

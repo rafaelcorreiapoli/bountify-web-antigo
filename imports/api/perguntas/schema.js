@@ -4,7 +4,7 @@ export const WIDGETS = {
 	TEXT: 'text',
 	CHECKBOX: 'checkbox',
 	SELECT: 'select',
-	RATING: 'rate',
+	RATING: 'rating',
 	SLIDER: 'slider',
 	IMAGE_SELECT: 'imageSelect'
 };

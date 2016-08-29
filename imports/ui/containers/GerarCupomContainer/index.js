@@ -36,7 +36,7 @@ class GerarCupomContainer extends React.Component {
     return (
       <div>
       <NotificationSystem ref="notificationSystem" />
-      <Button bsStyle="primary" onClick={this.handleClick}> Gerar Cupom</Button>
+      <Button style={{marginTop: 20}} bsStyle="primary" className="btn-fill" onClick={this.handleClick}> Gerar Cupom</Button>
       </div>
     )
   }

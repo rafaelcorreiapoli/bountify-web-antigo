@@ -8,7 +8,6 @@ import AppRoutes from '/imports/startup/client/routes'
 
 import '/imports/startup/client/';
 
-
 Meteor.startup(() => {
   const appElement = document.getElementById('app');
 

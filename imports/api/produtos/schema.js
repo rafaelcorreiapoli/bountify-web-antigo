@@ -28,4 +28,4 @@ export const ProdutoSchema = new SimpleSchema({
 
 export const attachSchema = () => {
     Produtos.attachSchema(ProdutoSchema)
-}
+};

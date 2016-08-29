@@ -119,13 +119,24 @@ Meteor.publishComposite('cupons.meusCupons', function() {
   };
 });
 
+Meteor.publishComposite('cupons.cuponsGerados', function() {
+  const userId = this.userId
+  return {
+    find() {
+			return Cupons.find({
+        geradoPor: userId
+      });
+    }
+  };
+});
 
-Meteor.publishComposite('cupons.single', function({ id }) {
-  check(id, String);
+
+Meteor.publishComposite('cupons.single', function({ cupomId }) {
+  check(cupomId, String);
   return {
     find() {
       return Cupons.find({
-        _id: id
+        _id: cupomId
       });
     },
     children: [{
